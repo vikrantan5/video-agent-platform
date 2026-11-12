@@ -1,0 +1,27 @@
+{
+  "passed": 4,
+  "failed": 1,
+  "bugs": [
+    {
+      "severity": "medium",
+      "evidence": "Browser check invalid-brief-audio-rejected received backend 415 (console: Failed to load resource: the server responded with a status of 415), but no visible 'Voice must be a valid 3–45 second audio file' toast was found within 10 seconds; failure screenshot: /root/.emergent/automation_output/20261112_110508_415/invalid-brief-audio-rejected-failure.png. Backend test confirms invalid audio is rejected with HTTP 415."
+    },
+    {
+      "severity": "medium",
+      "evidence": "After creating a job, the selected review textarea remained empty while the live API row had a generated Hindi script (curl showed tscheck-रील-1794481128301 status voice_required with script length 164). Clicking the job row populated the textarea and allowed the lifecycle check to pass; this indicates generated script is not immediately displayed for the automatically selected job."
+    }
+  ],
+  "action_items": [
+    "Retest after frontend fixes for selected-job script hydration and visible invalid-audio error feedback.",
+    "The record-voice control was clicked at 1280x720; browser microphone permission flow is environment-dependent and not a real recording assertion."
+  ],
+  "retest_needed": true,
+  "checks": [
+    {"criterion":"Structured Hindi brief creates a job and generated script is available","name":"brief-creates-job","lane":"browser","status":"passed","evidence":"Public preview at desktop 1280px: filled Hindi brief, clicked Generate Hindi script, job heading appeared, generated-script textarea became editable."},
+    {"criterion":"Operator edits and saves script, uploads valid voice, render is playable, approves, and state persists after reload","name":"script-voice-render-approve","lane":"browser","status":"passed","evidence":"Public preview at 800px: selection, script save, 4-second WAV upload, composing/validating state, approve button, video currentTime advanced, media response was 200 video/mp4, approval survived reload."},
+    {"criterion":"Primary record voice control is clickable","name":"record-voice-control-clicks","lane":"browser","status":"passed","evidence":"Public preview at 1280px: record-voice-button was visible and click completed without page crash."},
+    {"criterion":"Invalid or missing brief and invalid audio are rejected visibly","name":"invalid-brief-audio-rejected","lane":"browser","status":"failed","evidence":"Invalid audio request returned console HTTP 415, but expected visible error toast was absent; missing brief toast also was not observable."},
+    {"criterion":"Phase 1 HTTP lifecycle, script edit, voice duration, 1080x1920 MP4, events, approval and persistence","name":"test_tscheck_phase1_lifecycle.py","lane":"backend","status":"passed","evidence":"pytest HTTP assertions passed: POST /jobs 200, PATCH script 200, POST voice 200 with 3-45s duration, GET media 200 content-type video/mp4 and ffprobe 1080x1920, events append-only, approve 200, GET job persisted."},
+    {"criterion":"Invalid brief and invalid audio API validation","name":"test_tscheck_phase1_validation.py","lane":"backend","status":"passed","evidence":"pytest HTTP assertions passed: POST /jobs invalid brief 422; POST /jobs/{id}/voice text/plain 415."}
+  ]
+}

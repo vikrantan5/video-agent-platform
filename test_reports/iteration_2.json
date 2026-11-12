@@ -1,0 +1,60 @@
+{
+  "passed": 7,
+  "failed": 0,
+  "bugs": [],
+  "action_items": [
+    "Record button click was verified; actual microphone recording remains environment-dependent because browser permission/device access is not asserted."
+  ],
+  "retest_needed": false,
+  "checks": [
+    {
+      "criterion": "Structured Hindi brief creates a job and generated script hydrates in the selected review textarea",
+      "name": "brief-creates-job",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Public preview rerun at desktop width: Hindi brief created a job and the generated-script textarea became editable without re-clicking the job."
+    },
+    {
+      "criterion": "Invalid audio shows visible error feedback",
+      "name": "invalid-brief-audio-rejected",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Public preview rerun: invalid text upload produced visible exact error 'Voice must be a valid 3–45 second audio file'; backend 415 console response is expected validation behavior."
+    },
+    {
+      "criterion": "Missing brief shows visible error feedback",
+      "name": "missing-brief-shows-error",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Public preview: clicking Generate Hindi script with empty topic/audience displayed 'Add a topic and audience first'."
+    },
+    {
+      "criterion": "Operator edits and saves script, uploads valid voice, render is playable, approves, and state persists after reload",
+      "name": "script-voice-render-approve",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Public preview rerun at 800px: script edit/save, valid WAV upload, composing/validating, playable video, approval, video/mp4 media response, and approval persistence after reload all passed."
+    },
+    {
+      "criterion": "Primary record voice control is clickable",
+      "name": "record-voice-control-clicks",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Public preview rerun at desktop width: record-voice-button was visible and click completed without page crash."
+    },
+    {
+      "criterion": "Phase 1 HTTP lifecycle, script edit, voice duration, 1080x1920 MP4, events, approval and persistence",
+      "name": "test_tscheck_phase1_lifecycle.py",
+      "lane": "backend",
+      "status": "passed",
+      "evidence": "pytest HTTP suite: 2 tests passed; lifecycle assertions included POST/PATCH jobs, voice upload, media video/mp4 with 1080x1920 ffprobe dimensions, event history, approve, and persisted GET job."
+    },
+    {
+      "criterion": "Invalid brief and invalid audio API validation",
+      "name": "test_tscheck_phase1_validation.py",
+      "lane": "backend",
+      "status": "passed",
+      "evidence": "pytest HTTP suite: invalid brief returned 422 and invalid text/plain voice upload returned 415; validation test passed."
+    }
+  ]
+}
